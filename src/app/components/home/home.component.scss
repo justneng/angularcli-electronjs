@@ -10,8 +10,28 @@
 
   .title {
     color: white;
-    margin:0;
-    padding:50px 20px;
+    margin: 0;
+    padding: 50px 20px;
   }
 
+}
+
+div.connection-panel {
+  width: 400px;
+  height: 320px;
+  margin: 15px;
+}
+
+div.connection-panel img {
+  width: 100%;
+  height: 100%;
+}
+
+#new-connection-btn {
+  cursor: pointer;
+}
+
+ngb-tab {
+  padding-top: 15px;
+  padding-bottom: 15px;
 }

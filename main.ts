@@ -1,15 +1,19 @@
-import { app, BrowserWindow, screen } from 'electron';
+import {app, BrowserWindow, screen} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import {global} from '@angular/compiler/src/util';
+import "reflect-metadata";
+
+const args = process.argv.slice(1);
+const dataSource = require('./src/app/election-module/nedb-connection');
 
 let win, serve;
-const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
+global.dataSource = dataSource.get();
 
 function createWindow() {
 
-  const electronScreen = screen;
-  const size = electronScreen.getPrimaryDisplay().workAreaSize;
+  const size = screen.getPrimaryDisplay().workAreaSize;
 
   // Create the browser window.
   win = new BrowserWindow({
@@ -21,6 +25,7 @@ function createWindow() {
       nodeIntegration: true,
     },
   });
+  win.setResizable(false);
 
   if (serve) {
     require('electron-reload')(__dirname, {
@@ -35,9 +40,10 @@ function createWindow() {
     }));
   }
 
-  if (serve) {
-    win.webContents.openDevTools();
-  }
+  win.webContents.openDevTools();
+  // if (serve) {
+  //   win.webContents.openDevTools();
+  // }
 
   // Emitted when the window is closed.
   win.on('closed', () => {

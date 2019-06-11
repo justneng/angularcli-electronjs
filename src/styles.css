@@ -5,3 +5,7 @@ html, body {
 
   height: 100%;
 }
+
+button.btn-primary {
+  background-color: #6610f2;
+}

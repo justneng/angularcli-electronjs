@@ -1,5 +1,7 @@
 {
   "compileOnSave": false,
+  "emitDecoratorMetadata": true, // for typeorm
+  "experimentalDecorators": true, // for typeorm
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
