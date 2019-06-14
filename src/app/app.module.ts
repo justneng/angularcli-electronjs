@@ -11,12 +11,12 @@ import {AppRoutingModule} from './app-routing.module';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
-import {ElectronService} from './providers/electron.service';
+import {ElectronService} from './provider/electron.service';
 
-import {WebviewDirective} from './directives/webview.directive';
+import {WebviewDirective} from './directive/webview.directive';
 
 import {AppComponent} from './app.component';
-import {HomeComponent} from './components/home/home.component';
+import {HomeComponent} from './component/home/home.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ShareModule} from './shared/share.module';

@@ -2,16 +2,21 @@ import {Injectable} from '@angular/core';
 import {remote} from 'electron';
 import {Connection, ConnectionOptions} from 'typeorm';
 import {from, Observable, Subject} from 'rxjs';
-import {ConnectionStatus} from '../type/connection-status';
 import {finalize} from 'rxjs/operators';
+import {AppConnection, ConnectionStatus} from '../common/type';
+import {UserDefinedConnection} from '../entity/user-defined-connection.entity';
 
 @Injectable()
 export class ClientConnectionService {
 
   private readonly _typeorm = remote.getGlobal('typeorm');
-  private readonly _connection = remote.getGlobal('clientConnection');
+  private readonly _connection: AppConnection = remote.getGlobal('clientConnection');
 
   constructor() {
+  }
+
+  get connection(): AppConnection {
+    return this._connection;
   }
 
   public createConnection(options: ConnectionOptions): Observable<Connection> {
@@ -48,7 +53,21 @@ export class ClientConnectionService {
     return status;
   }
 
-  get connection(): any {
-    return this._connection;
+  public findAll(): Observable<UserDefinedConnection[]> {
+    return from(
+      this.connection
+        .repo.userDefinedConnectionRepository
+        .query('select * from user_defined_connection')
+    ) as Observable<UserDefinedConnection[]>;
+  }
+
+  public save(newConnection: any): Observable<UserDefinedConnection> {
+    return from(this.connection
+      .repo.userDefinedConnectionRepository
+      .save(newConnection)
+      .then(connection => {
+        return connection;
+      })
+    ) as Observable<UserDefinedConnection>;
   }
 }

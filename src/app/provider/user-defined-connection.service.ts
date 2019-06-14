@@ -1,13 +1,14 @@
 import {Injectable, OnInit} from '@angular/core';
 import {ipcRenderer, remote} from 'electron';
 import {ClientConnectionService} from './client-connection.service';
-import {Connection, ConnectionOptions} from 'typeorm';
+import {ConnectionOptions} from 'typeorm';
 import {BehaviorSubject} from 'rxjs';
+import {AppConnection} from '../common/type';
 
 @Injectable()
 export class UserDefinedConnectionService implements OnInit {
 
-  private _connection = new BehaviorSubject<Connection>(remote.getGlobal('userDefinedConnection'));
+  private _connection = new BehaviorSubject<AppConnection>(remote.getGlobal('userDefinedConnection'));
 
   constructor(private clientConnectionService: ClientConnectionService) {
   }
@@ -46,7 +47,7 @@ export class UserDefinedConnectionService implements OnInit {
       .findOne(1);
   }
 
-  get connection(): BehaviorSubject<Connection> {
+  get connection(): BehaviorSubject<AppConnection> {
     return this._connection;
   }
 }

@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
-import {DatabaseConnectionService} from '../providers/database-connection.service';
-import {MasterDataService} from '../providers/masterdata.service';
-import {ClientConnectionService} from '../providers/client-connection.service';
-import {UserDefinedConnectionService} from '../providers/user-defined-connection.service';
+import {DatabaseConnectionService} from '../provider/database-connection.service';
+import {MasterDataService} from '../provider/masterdata.service';
+import {ClientConnectionService} from '../provider/client-connection.service';
+import {UserDefinedConnectionService} from '../provider/user-defined-connection.service';
 
 @NgModule({
   declarations: [

@@ -1,8 +1,8 @@
 import {CreateDateColumn, Entity, UpdateDateColumn, VersionColumn} from 'typeorm';
 import {PrimaryGeneratedColumn} from 'typeorm/decorator/columns/PrimaryGeneratedColumn';
 import {Column} from 'typeorm/decorator/columns/Column';
-import {ConnectionType} from '../type/connection-type';
 import {PrimaryColumn} from 'typeorm/decorator/columns/PrimaryColumn';
+import {ConnectionType} from '../common/type';
 
 @Entity({name: 'user_defined_connection'})
 export class UserDefinedConnection {
