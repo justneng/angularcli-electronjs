@@ -3,6 +3,7 @@ import {ElectronService} from './providers/electron.service';
 import {TranslateService} from '@ngx-translate/core';
 import {AppConfig} from '../environments/environment';
 import {MenuItem} from 'primeng/api';
+import {createConnection} from 'typeorm';
 
 @Component({
   selector: 'app-root',
@@ -56,5 +57,21 @@ export class AppComponent implements OnInit {
       {label: 'Lionel Messi', url: 'https://en.wikipedia.org/wiki/Lionel_Messi'}
     ];
 
+  }
+
+  testConnection() {
+    createConnection(
+      {
+        name: 'user-defined',
+        type: 'mysql',
+        host: 'localhost',
+        port: 3306,
+        username: 'root',
+        password: 'computer',
+        database: 'mylocaldatabase'
+      }
+    ).then(connection => {
+      console.log('get connection from service = ', connection);
+    });
   }
 }

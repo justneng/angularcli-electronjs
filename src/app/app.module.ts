@@ -18,9 +18,8 @@ import {WebviewDirective} from './directives/webview.directive';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './components/home/home.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MessageService} from 'primeng/primeng';
-import {UserManagementComponent} from './components/user-management/user-management.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ShareModule} from './shared/share.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -31,8 +30,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     HomeComponent,
-    WebviewDirective,
-    UserManagementComponent
+    WebviewDirective
   ],
   imports: [
     BrowserModule,
@@ -50,11 +48,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+
+    ShareModule
   ],
   providers: [
-    ElectronService,
-    MessageService],
+    ElectronService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {UserManagementComponent} from './components/user-management/user-management.component';
 import {HomeComponent} from './components/home/home.component';
 
 const routes: Routes = [
@@ -12,10 +11,6 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
-  },
-  {
-    path: 'user-management',
-    component: UserManagementComponent
   }
 ];
 

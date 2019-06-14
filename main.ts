@@ -2,16 +2,31 @@ import {app, BrowserWindow, screen} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import {global} from '@angular/compiler/src/util';
-import "reflect-metadata";
+import {UserDefinedConnection} from './src/app/entity/user-defined-connection.entity';
+import {HealthInformation} from './src/app/entity/health-information.entity';
+import {ConnectionOptions} from 'typeorm';
 
+const {ipcMain} = require('electron');
+const fs = require('fs');
+const root = fs.readdirSync('/');
+const S3 = require('aws-sdk/clients/s3');
 const args = process.argv.slice(1);
-const dataSource = require('./src/app/election-module/nedb-connection');
+const typeorm = require('typeorm');
 
 let win, serve;
 serve = args.some(val => val === '--serve');
-global.dataSource = dataSource.get();
 
-function createWindow() {
+global.typeorm = typeorm;
+global.clientConnection = {
+  instance: undefined,
+  repo: {}
+};
+global.userDefinedConnection = {
+  instance: undefined,
+  repo: {}
+};
+
+async function createWindow() {
 
   const size = screen.getPrimaryDisplay().workAreaSize;
 
@@ -25,7 +40,17 @@ function createWindow() {
       nodeIntegration: true,
     },
   });
+
   win.setResizable(false);
+
+  await createClientConnection()
+    .then(connection => {
+      global.clientConnection.instance = connection;
+      registerRepository(connection);
+    })
+    .catch(error => {
+      throw new Error(error);
+    });
 
   if (serve) {
     require('electron-reload')(__dirname, {
@@ -82,4 +107,47 @@ try {
 } catch (e) {
   // Catch Error
   // throw e;
+}
+
+ipcMain.on('synchronous-user-defined-connection', (event, options) => {
+  createUserDefinedConnection(options)
+    .then(connection => {
+      global.userDefinedConnection.instance = connection;
+      registerUserDefinedRepository(connection);
+      event.returnValue = '[Main Process] : I received your request and set the value to global variable. Now you can access by name \'userDefinedConnection\'.';
+    })
+    .catch(error => {
+      throw new Error(error);
+    });
+});
+
+async function createClientConnection() {
+  return typeorm.createConnection({
+    name: 'client-database',
+    type: 'sqlite',
+    synchronize: true,
+    logging: true,
+    logger: 'simple-console',
+    database: 'database.sqlite',
+    entities: [
+      UserDefinedConnection
+    ]
+  });
+}
+
+async function createUserDefinedConnection(options: ConnectionOptions) {
+  return typeorm.createConnection(
+    {
+      ...options,
+      entities: [HealthInformation]
+    });
+}
+
+
+function registerRepository(connection: any) {
+  global.clientConnection.repo.userDefinedConnectionRepository = connection.getRepository(UserDefinedConnection);
+}
+
+function registerUserDefinedRepository(connection: any) {
+  global.userDefinedConnection.repo.healthInformationRepository = connection.getRepository(HealthInformation);
 }

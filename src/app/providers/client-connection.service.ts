@@ -1,0 +1,54 @@
+import {Injectable} from '@angular/core';
+import {remote} from 'electron';
+import {Connection, ConnectionOptions} from 'typeorm';
+import {from, Observable, Subject} from 'rxjs';
+import {ConnectionStatus} from '../type/connection-status';
+import {finalize} from 'rxjs/operators';
+
+@Injectable()
+export class ClientConnectionService {
+
+  private readonly _typeorm = remote.getGlobal('typeorm');
+  private readonly _connection = remote.getGlobal('clientConnection');
+
+  constructor() {
+  }
+
+  public createConnection(options: ConnectionOptions): Observable<Connection> {
+    let conn: Promise<Connection> = this._typeorm.createConnection(options);
+    return from(conn);
+  }
+
+  public testConnection(options: ConnectionOptions): Subject<ConnectionStatus> {
+    let conn: Connection;
+    let status = new Subject<ConnectionStatus>();
+    this.createConnection(options)
+      .pipe(finalize(() => {
+        if (conn && conn.isConnected) {
+          conn.close()
+            .catch(error => {
+              throw Error(error);
+            });
+        }
+      }))
+      .subscribe(connection => {
+        conn = connection;
+        Object.freeze(conn);
+        conn
+          .query('SELECT 1 AS TEST_CONNECTION')
+          .then(result => {
+            status.next({status: 'SUCCESS', message: 'Success'} as ConnectionStatus);
+          })
+          .catch(error => {
+            status.next({status: 'EXCEPTION', message: `An exception occur! ${error.message}`} as ConnectionStatus);
+          });
+      }, error => {
+        status.next({status: 'EXCEPTION', message: `An exception occur! ${error.message}`} as ConnectionStatus);
+      });
+    return status;
+  }
+
+  get connection(): any {
+    return this._connection;
+  }
+}
