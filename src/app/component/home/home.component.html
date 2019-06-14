@@ -1,23 +1,29 @@
-<!--<div class="row justify-content-between">-->
-<!--  <div class="connection-panel d-inline-block">-->
-<!--    <img src="../../../assets/image/mysql-logo.svg" alt="mysql">-->
-<!--  </div>-->
-<!--  <div class="connection-panel d-inline-block">-->
-<!--    <img src="../../../assets/image/postgresql-logo.png" alt="mysql">-->
-<!--  </div>-->
-
-<!--</div>-->
 <i class="fe fe-plus" id="new-connection-btn" (click)="open(modalConnectionTemplate)">&nbsp;สร้าง Connection ใหม่</i>
-
-<div class="row" *ngIf="currentUserDefinedConnection?.instance">
-  You have been connecting to {{currentUserDefinedConnection?.instance.name}}
+<br>
+<br>
+<div class="row" *ngIf="currentUserDefinedConnection?.instance?.isConnected">
+  You have been connecting to '{{currentUserDefinedConnection?.instance.name}}'
 </div>
 
-<div class="row" *ngIf="!currentUserDefinedConnection?.instance">
-  <div class="connection-panel d-inline-block" *ngFor="let conn of userDefinedConnections" (click)="connect(conn.name)">
-    <ul>
-      <li>{{conn.name}}@{{conn.host}}</li>
-    </ul>
+<div class="row" *ngIf="!currentUserDefinedConnection?.instance?.isConnected">
+  <div class="col-6">
+    <div class="row" *ngFor="let conn of userDefinedConnections" (click)="connect(conn.name)">
+      <div class="col-6 active-database-info">
+        <h6 class="d-inline-block">{{conn.name}}</h6>
+        <img class="d-inline-block float-right db-icon" src="../assets/image/mysql.svg" alt="db-icon" width="30" height="30">
+        <div>
+          <img class="addon-icon" src="../assets/icon/database.svg">
+          &nbsp;{{conn.database}}
+        </div>
+        <div>
+          <img class="addon-icon" src="../assets/icon/server.svg">
+          &nbsp;{{conn.host}}:{{conn.port}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+
   </div>
 </div>
 
@@ -80,7 +86,8 @@
             <div class="form-group row" *ngIf="connectionStatus && connectionStatus.status">
               <div class="col">
                 <div class="alert alert-{{connectionStatus.status == 'SUCCESS'? 'success': 'danger'}}" role="alert">
-                  <i class="fe {{connectionStatus.status == 'SUCCESS'? 'fe-check': 'fe-warning'}}"></i>&nbsp;{{connectionStatus.message}}
+                  <i
+                    class="fe {{connectionStatus.status == 'SUCCESS'? 'fe-check': 'fe-warning'}}"></i>&nbsp;{{connectionStatus.message}}
                 </div>
               </div>
             </div>
@@ -93,7 +100,8 @@
       </ngb-tab>
     </ngb-tabset>
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="saveConnection(); modal.close('Save click')">บันทึก</button>
+      <button type="button" class="btn btn-primary" (click)="saveConnection(); modal.close('Save click')">บันทึก
+      </button>
     </div>
   </div>
 </ng-template>

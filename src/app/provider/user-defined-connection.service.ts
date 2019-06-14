@@ -16,6 +16,10 @@ export class UserDefinedConnectionService implements OnInit {
   ngOnInit(): void {
   }
 
+  get connection(): BehaviorSubject<AppConnection> {
+    return this._connection;
+  }
+
   public createConnection(options: ConnectionOptions) {
     console.log('[Renderer Process] : Hey Main Process I send you a \'connection\'. please store it for me.');
     let response = ipcRenderer.sendSync('synchronous-user-defined-connection', options);
@@ -24,7 +28,7 @@ export class UserDefinedConnectionService implements OnInit {
     this._connection.next(currentConnection);
   }
 
-  connect(name: string) {
+  public connect(name: string) {
     this.findUserDefinedDatabaseByName(name)
       .then(result => {
         let options = {
@@ -40,14 +44,30 @@ export class UserDefinedConnectionService implements OnInit {
       });
   }
 
-  async findUserDefinedDatabaseByName(name: string) {
+  public anyActive(): boolean {
+    let current: AppConnection = remote.getGlobal('userDefinedConnection');
+    return current && current.instance && current.instance.isConnected;
+  }
+
+
+  public async findUserDefinedDatabaseByName(name: string) {
     return await this.clientConnectionService
       .connection
       .repo.userDefinedConnectionRepository
       .findOne(1);
   }
 
-  get connection(): BehaviorSubject<AppConnection> {
-    return this._connection;
+  public disconnect() {
+    let current: AppConnection = remote.getGlobal('userDefinedConnection');
+    if (current && current.instance && current.instance.isConnected) {
+      current.instance.close()
+        .then(result => {
+          console.log('disconnect from current connection ', result);
+          this._connection.next(undefined);
+        })
+        .catch(err => {
+          throw err;
+        })
+    }
   }
 }

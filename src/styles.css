@@ -9,3 +9,12 @@ html, body {
 button.btn-primary {
   background-color: #6610f2;
 }
+
+i.fe {
+  font-size: 22px;
+}
+
+.addon-icon {
+  width: 18px;
+  height: 18px;
+}

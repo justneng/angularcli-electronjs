@@ -9,5 +9,6 @@ export type ConnectionType = 'mysql' | 'sqlite';
 
 export type AppConnection = {
   instance: Connection,
-  repo: any
+  repo: any,
+  information: any
 }

@@ -118,3 +118,26 @@ body {
 nav {
   //background-color: #090a0b;
 }
+
+.nav-link > i.fe {
+  float: right;
+}
+
+.active-database-info {
+  height: 120px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 15px;
+  cursor: auto;
+}
+
+.active-database-info > div {
+  width: 245px !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.disconnect-database {
+  cursor: pointer;
+}

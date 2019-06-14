@@ -19,11 +19,13 @@ serve = args.some(val => val === '--serve');
 global.typeorm = typeorm;
 global.clientConnection = {
   instance: undefined,
-  repo: {}
+  repo: {},
+  information: {}
 };
 global.userDefinedConnection = {
   instance: undefined,
-  repo: {}
+  repo: {},
+  information: {}
 };
 
 async function createWindow() {
@@ -113,6 +115,7 @@ ipcMain.on('synchronous-user-defined-connection', (event, options) => {
   createUserDefinedConnection(options)
     .then(connection => {
       global.userDefinedConnection.instance = connection;
+      global.userDefinedConnection.information = options;
       registerUserDefinedRepository(connection);
       event.returnValue = '[Main Process] : I received your request and set the value to global variable. Now you can access by name \'userDefinedConnection\'.';
     })

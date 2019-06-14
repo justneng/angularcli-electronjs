@@ -3,7 +3,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ClientConnectionService} from '../../provider/client-connection.service';
 import {UserDefinedConnection} from '../../entity/user-defined-connection.entity';
 import {UserDefinedConnectionService} from '../../provider/user-defined-connection.service';
-import {ConnectionStatus} from '../../common/type';
+import {AppConnection, ConnectionStatus} from '../../common/type';
 
 @Component({
   selector: 'app-home',
@@ -14,9 +14,10 @@ export class HomeComponent implements OnInit {
 
   newConnection: any = {};
   connectionStatus: ConnectionStatus;
+
   userDefinedConnections: UserDefinedConnection[] = [];
 
-  currentUserDefinedConnection: any;
+  currentUserDefinedConnection: AppConnection;
 
   constructor(private modalService: NgbModal,
               private clientConnectionService: ClientConnectionService,
