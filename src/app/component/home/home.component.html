@@ -10,13 +10,13 @@
     <div class="row" *ngFor="let conn of userDefinedConnections" (click)="connect(conn.name)">
       <div class="col-6 active-database-info">
         <h6 class="d-inline-block">{{conn.name}}</h6>
-        <img class="d-inline-block float-right db-icon" src="../assets/image/mysql.svg" alt="db-icon" width="30" height="30">
+        <img class="d-inline-block float-right db-icon" [src]="pathService.resolveAssetsPath('image/mysql.svg')" alt="db-icon" width="30" height="30">
         <div>
-          <img class="addon-icon" src="../assets/icon/database.svg">
+          <img class="addon-icon" [src]="pathService.resolveAssetsPath('icon/database.svg')">
           &nbsp;{{conn.database}}
         </div>
         <div>
-          <img class="addon-icon" src="../assets/icon/server.svg">
+          <img class="addon-icon" [src]="pathService.resolveAssetsPath('icon/server.svg')">
           &nbsp;{{conn.host}}:{{conn.port}}
         </div>
       </div>

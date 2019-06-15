@@ -4,6 +4,7 @@ import {ClientConnectionService} from '../../provider/client-connection.service'
 import {UserDefinedConnection} from '../../entity/user-defined-connection.entity';
 import {UserDefinedConnectionService} from '../../provider/user-defined-connection.service';
 import {AppConnection, ConnectionStatus} from '../../common/type';
+import {PathService} from '../../provider/path.service';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ export class HomeComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
               private clientConnectionService: ClientConnectionService,
-              private userDefinedConnectionService: UserDefinedConnectionService) {
+              private userDefinedConnectionService: UserDefinedConnectionService,
+              public pathService: PathService) {
 
     this.userDefinedConnectionService
       .connection

@@ -4,6 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {AppConfig} from '../environments/environment';
 import {UserDefinedConnectionService} from './provider/user-defined-connection.service';
 import {AppConnection} from './common/type';
+import {PathService} from './provider/path.service';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ export class AppComponent implements OnInit {
   currentUserDefinedConnection: AppConnection;
 
   constructor(public electronService: ElectronService,
+              public pathService: PathService,
               private translate: TranslateService,
               private userDefinedConnectionService: UserDefinedConnectionService) {
 

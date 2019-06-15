@@ -16,6 +16,7 @@ const typeorm = require('typeorm');
 let win, serve;
 serve = args.some(val => val === '--serve');
 
+global.serve = serve;
 global.typeorm = typeorm;
 global.clientConnection = {
   instance: undefined,
@@ -59,6 +60,7 @@ async function createWindow() {
       electron: require(`${__dirname}/node_modules/electron`)
     });
     win.loadURL('http://localhost:4200');
+    win.webContents.openDevTools();
   } else {
     win.loadURL(url.format({
       pathname: path.join(__dirname, 'dist/index.html'),
@@ -66,11 +68,6 @@ async function createWindow() {
       slashes: true
     }));
   }
-
-  win.webContents.openDevTools();
-  // if (serve) {
-  //   win.webContents.openDevTools();
-  // }
 
   // Emitted when the window is closed.
   win.on('closed', () => {
