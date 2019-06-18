@@ -5,7 +5,7 @@ export type ConnectionStatus = {
   message: string
 }; //status = SUCCESS OR EXCEPTION
 
-export type ConnectionType = 'mysql' | 'sqlite';
+export type ConnectionType = 'mysql' | 'postgresql' | 'sqlite';
 
 export type AppConnection = {
   instance: Connection,
