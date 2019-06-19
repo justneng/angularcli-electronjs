@@ -15,7 +15,8 @@ export class HomeComponent implements OnInit {
 
   newConnection: any = {};
   connectionStatus: ConnectionStatus;
-  userDefinedConnections: UserDefinedConnection[] = [];
+  userDefinedMySqls: UserDefinedConnection[] = [];
+  userDefinedPostgreSqls: UserDefinedConnection[] = [];
   currentUserDefinedConnection: AppConnection;
 
   constructor(private modalService: NgbModal,
@@ -31,18 +32,34 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.findAllUserDefinedConnection();
+    this.findAllConnection();
   }
 
-  findAllUserDefinedConnection() {
+  findAllConnection() {
     this.clientConnectionService
-      .findAll()
-      .subscribe(result => {
-        this.userDefinedConnections = result;
-      });
+      .findUserDefinedConnectionByType('mysql')
+      .then(
+        result => {
+          this.userDefinedMySqls = result;
+        },
+        err => {
+          throw err;
+        }
+      );
+    this.clientConnectionService
+      .findUserDefinedConnectionByType('postgres')
+      .then(
+        result => {
+          this.userDefinedPostgreSqls = result;
+        },
+        err => {
+          throw err;
+        }
+      );
   }
 
   open(content) {
+    this.connectionStatus = undefined;
     this.setConnection('mysql');
     this.modalService
       .open(content, {backdrop: 'static', size: 'lg'})
@@ -55,7 +72,7 @@ export class HomeComponent implements OnInit {
   }
 
   setConnection(type: string) {
-    if(type === 'mysql') {
+    if (type === 'mysql') {
       this.newConnection = {
         type: 'mysql',
         port: 3306,
@@ -63,7 +80,7 @@ export class HomeComponent implements OnInit {
         logger: 'advanced-console'
       };
     }
-    if(type === 'postgres') {
+    if (type === 'postgres') {
       this.newConnection = {
         type: 'postgres',
         port: 5432,
@@ -84,6 +101,7 @@ export class HomeComponent implements OnInit {
     this.clientConnectionService.save(this.newConnection)
       .subscribe(connection => {
         this.newConnection = connection;
+        this.findAllConnection();
       });
   }
 

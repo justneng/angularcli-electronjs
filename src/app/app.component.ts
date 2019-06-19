@@ -45,6 +45,14 @@ export class AppComponent implements OnInit {
     return this.userDefinedConnectionService.anyActive();
   }
 
+  mysqlIsActive(): boolean {
+    return this.userDefinedConnectionService.mysqlIsActive();
+  }
+
+  postgresqlIsActive(): boolean {
+    return this.userDefinedConnectionService.postgresqlIsActive();
+  }
+
   disconnect() {
     this.userDefinedConnectionService.disconnect();
   }

@@ -3,7 +3,7 @@ import {remote} from 'electron';
 import {Connection, ConnectionOptions} from 'typeorm';
 import {from, Observable, Subject} from 'rxjs';
 import {finalize} from 'rxjs/operators';
-import {AppConnection, ConnectionStatus} from '../common/type';
+import {AppConnection, ConnectionStatus, ConnectionType} from '../common/type';
 import {UserDefinedConnection} from '../entity/user-defined-connection.entity';
 
 @Injectable()
@@ -53,12 +53,20 @@ export class ClientConnectionService {
     return status;
   }
 
-  public findAll(): Observable<UserDefinedConnection[]> {
-    return from(
-      this.connection
-        .repo.userDefinedConnectionRepository
-        .query('select * from user_defined_connection')
-    ) as Observable<UserDefinedConnection[]>;
+  public findUserDefinedConnectionByType(type: ConnectionType): Promise<UserDefinedConnection[]> {
+    return this.connection
+      .repo.userDefinedConnectionRepository
+      .createQueryBuilder('db')
+      .where("db.type = :type", {type: type})
+      .getMany();
+  }
+
+  public findUserDefinedConnectionByName(name: string): UserDefinedConnection {
+    return this.connection
+      .repo.userDefinedConnectionRepository
+      .createQueryBuilder('db')
+      .where("db.name = :name", {name: name})
+      .getOne();
   }
 
   public save(newConnection: any): Observable<UserDefinedConnection> {

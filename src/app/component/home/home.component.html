@@ -6,8 +6,8 @@
 </div>
 
 <div class="row" *ngIf="!currentUserDefinedConnection?.instance?.isConnected">
-  <div class="col-6">
-    <div class="row" *ngFor="let conn of userDefinedConnections" (click)="connect(conn.name)">
+  <div class="col-6" style="border-right: 1px solid rgba(0, 0, 0, 0.1);">
+    <div class="row" *ngFor="let conn of userDefinedMySqls" (click)="connect(conn.name)">
       <div class="col-6 active-database-info">
         <h6 class="d-inline-block">{{conn.name}}</h6>
         <img class="d-inline-block float-right db-icon" [src]="pathService.resolveAssetsPath('image/mysql.svg')" alt="db-icon" width="30" height="30">
@@ -23,7 +23,20 @@
     </div>
   </div>
   <div class="col-6">
-
+    <div class="row" *ngFor="let conn of userDefinedPostgreSqls" (click)="connect(conn.name)">
+      <div class="col-6 active-database-info">
+        <h6 class="d-inline-block">{{conn.name}}</h6>
+        <img class="d-inline-block float-right db-icon" [src]="pathService.resolveAssetsPath('image/postgresql.png')" alt="db-icon" width="30" height="30">
+        <div>
+          <img class="addon-icon" [src]="pathService.resolveAssetsPath('icon/database.svg')">
+          &nbsp;{{conn.database}}
+        </div>
+        <div>
+          <img class="addon-icon" [src]="pathService.resolveAssetsPath('icon/server.svg')">
+          &nbsp;{{conn.host}}:{{conn.port}}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

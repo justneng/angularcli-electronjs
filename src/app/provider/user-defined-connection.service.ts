@@ -28,9 +28,10 @@ export class UserDefinedConnectionService implements OnInit {
     this._connection.next(currentConnection);
   }
 
-  public connect(name: string) {
-    this.findUserDefinedDatabaseByName(name)
+  public async connect(name: string) {
+    await this.findByName(name)
       .then(result => {
+        console.log('result = ', result);
         let options = {
           name: result.name,
           type: result.type,
@@ -49,12 +50,24 @@ export class UserDefinedConnectionService implements OnInit {
     return current && current.instance && current.instance.isConnected;
   }
 
+  public mysqlIsActive(): boolean {
+    let current: AppConnection = remote.getGlobal('userDefinedConnection');
+    return current && current.instance && current.information.type == 'mysql';
+  }
 
-  public async findUserDefinedDatabaseByName(name: string) {
+  public postgresqlIsActive(): boolean {
+    let current: AppConnection = remote.getGlobal('userDefinedConnection');
+    return current && current.instance && current.information.type == 'postgres';
+  }
+
+  public databaseType(): string {
+    let current: AppConnection = remote.getGlobal('userDefinedConnection');
+    return current.information.type;
+  }
+
+  public async findByName(name: string) {
     return await this.clientConnectionService
-      .connection
-      .repo.userDefinedConnectionRepository
-      .findOne(1);
+      .findUserDefinedConnectionByName(name);
   }
 
   public disconnect() {
@@ -67,7 +80,7 @@ export class UserDefinedConnectionService implements OnInit {
         })
         .catch(err => {
           throw err;
-        })
+        });
     }
   }
 }

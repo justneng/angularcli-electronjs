@@ -23,18 +23,19 @@
             <li class="nav-item">
               <a class="nav-link active-database-info" href="#">
                 <h6 class="d-inline-block">{{currentUserDefinedConnection.instance.name}}</h6>
-                <img class="d-inline-block float-right" [src]="pathService.resolveAssetsPath('image/mysql.svg')" alt="db-logo" width="30" height="30">
+                <img *ngIf="mysqlIsActive()" class="d-inline-block float-right" [src]="pathService.resolveAssetsPath('image/mysql.svg')" alt="db-logo" width="30" height="30">
+                <img *ngIf="postgresqlIsActive()" class="d-inline-block float-right" [src]="pathService.resolveAssetsPath('image/postgresql.png')" alt="db-logo" width="30" height="30">
                 <div>
-                  <img class="addon-icon" [src]="pathService.resolveAssetsPath('icon/database.svg')">
+                  <img class="addon-icon" [src]="pathService.resolveAssetsPath('icon/database2.svg')">
                   &nbsp;{{currentUserDefinedConnection?.information?.database}}
                 </div>
                 <div>
-                  <img class="addon-icon" [src]="pathService.resolveAssetsPath('icon/server.svg')">
+                  <img class="addon-icon" [src]="pathService.resolveAssetsPath('icon/server2.svg')">
                   &nbsp;{{currentUserDefinedConnection?.information?.host}}:{{currentUserDefinedConnection?.information?.port}}
                 </div>
                 <div>
                   <span class="disconnect-database" (click)="disconnect()">
-                    <img class="addon-icon" [src]="pathService.resolveAssetsPath('icon/unplugged.svg')">
+                    <img class="addon-icon" [src]="pathService.resolveAssetsPath('icon/unplugged2.svg')">
                     &nbsp;Disconnect
                   </span>
                 </div>
